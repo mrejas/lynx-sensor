@@ -1,0 +1,21 @@
+#
+# Edit this file and rename it config.py
+#
+config = {
+    "wlan" : {
+        'ssid': b'YOUR SSID HERE',		# WiFi SSID (MANDATORY)
+        'password': b'YOUR WLAN PW HERE',	# WiFi Password (MANDATORY)
+    },
+    "lynx" : {
+        'mode' : 'cloud', 		# cloud or edge, defaults to cloud
+        'api_key': b'<YOUR KEY HERE>'	# Always your API-key (MANDATORY)
+        'api' : b'lynx.iotopen.se',	# API, always cloud, even if in edge mode (MANDATORY)
+        'installation_id' : 0,		# Installation ID, Number (MANDATORY)
+        'client_id' : 0, 		# Client ID, Number (MANDATORY if cloud)
+    },
+    "mqtt": {
+        'broker': '',				# Broker, defaults to api (cannot be empty in edge-mode)
+        'username' : b'',			# leave empty if cloud or not needed
+        'password' : b'', 			# leave empty if cloud or not needed
+    }
+}
