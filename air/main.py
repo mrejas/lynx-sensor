@@ -55,7 +55,6 @@ ntptime.settime()
 wdt.feed()
 
 year, month, day, hour, mins, secs, weekday, yearday = time.localtime()   
-print('Time set: {}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} UTC'.format(year, month, day, hour, mins, secs) )
 
 led_blink(led, 3)
 
@@ -131,7 +130,6 @@ def load_intervals():
         pressure_interval = 3600
         eco2_interval = 3600
         tvoc_interval = 3600
-        print("State not found or error, returning default")
 
 
 # Received messages from subscriptions will be delivered to this callback
@@ -142,8 +140,6 @@ def sub_cb(topic, msg):
     global tvoc_interval
 
     data = json.loads(msg);
-    print('Got: ' + topic.decode())
-    print('Value: ' + str(data['value']))
     value = data['value'];
     if topic.decode() == client_id_prefix + topic_write_temperature_interval:
         temperature_interval = value
@@ -183,7 +179,6 @@ def sub_cb(topic, msg):
 
 
 def mqtt_connect():
-    print('Trying to connect MQTT')
     client = MQTTClient(mqtt_client_id, mqtt_broker,
                         user=b'picosensor',
                         password=mqtt_password,
@@ -193,17 +188,13 @@ def mqtt_connect():
     client.set_callback(sub_cb)
     client.set_last_will(client_id_prefix + topic_status, '{"value": 0}')
     client.connect()
-    print('Subscribing to: ' + client_id_prefix + topic_write_base + '/#')
     client.subscribe(client_id_prefix + topic_write_base + '/#')
-    print('Subscribing to: ' + client_id_prefix + topic_cmd_base + '/#')
     client.subscribe(client_id_prefix + topic_cmd_base + '/#')
     client.publish(client_id_prefix + topic_status, '{"value": 1}')
-    print('Connected to %s MQTT Broker'%(mqtt_broker))
     led_blink(led, 5)
     return client
 
 def reconnect():
-    print('Failed to connect to the MQTT Broker. Reconnecting...')
     time.sleep(5)
     machine.reset()
 
@@ -324,7 +315,6 @@ while True:
     try:
         client = mqtt_connect()
     except OSError as e:
-        print('Reconnecting ...')
         reconnect()
     
     load_intervals()
